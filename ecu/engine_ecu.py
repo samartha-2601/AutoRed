@@ -2,6 +2,8 @@ import can
 import random
 import time
 
+from configs.can_ids import *
+
 # Connect to virtual CAN interface
 bus = can.interface.Bus(
     channel="vcan0",
@@ -25,14 +27,14 @@ while True:
 
     # CAN ID 0x100 = Speed
     speed_msg = can.Message(
-        arbitration_id=0x100,
+        arbitration_id=SPEED_ID,
         data=speed.to_bytes(2, byteorder="big"),
         is_extended_id=False
     )
 
     # CAN ID 0x101 = RPM
     rpm_msg = can.Message(
-        arbitration_id=0x101,
+        arbitration_id=RPM_ID,
         data=rpm.to_bytes(2, byteorder="big"),
         is_extended_id=False
     )

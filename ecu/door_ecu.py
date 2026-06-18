@@ -2,6 +2,8 @@ import can
 import random
 import time
 
+from configs.can_ids import *
+
 bus = can.interface.Bus(
     channel="vcan0",
     interface="socketcan"
@@ -19,7 +21,7 @@ while True:
     value = 1 if locked else 0
 
     msg = can.Message(
-        arbitration_id=0x200,
+        arbitration_id=DOOR_ID,
         data=bytes([value]),
         is_extended_id=False
     )
