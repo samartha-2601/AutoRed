@@ -3,6 +3,6 @@
     "alerts": [
         "Door ECU Replay/Spoofing Detected"
     ],
-    "blocked_messages": 12,
+    "blocked_messages": 77,
     "attack_type": "REPLAY / SPOOFING"
 }
