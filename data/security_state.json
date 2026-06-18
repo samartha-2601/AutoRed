@@ -1,5 +1,8 @@
 {
-    "threat_level": "NORMAL",
-    "alerts": [],
-    "blocked_messages": 0
+    "threat_level": "HIGH",
+    "alerts": [
+        "Door ECU Replay/Spoofing Detected"
+    ],
+    "blocked_messages": 12,
+    "attack_type": "REPLAY / SPOOFING"
 }

@@ -11,7 +11,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Auto refresh every second
 st_autorefresh(
     interval=1000,
     key="dashboard_refresh"
@@ -22,13 +21,16 @@ st_autorefresh(
 # --------------------------------------------------
 
 try:
+
     with open(
         "data/vehicle_state.json",
         "r"
     ) as f:
+
         vehicle = json.load(f)
 
 except Exception:
+
     vehicle = {
         "speed": 0,
         "rpm": 0,
@@ -41,20 +43,25 @@ except Exception:
 # --------------------------------------------------
 
 try:
+
     with open(
         "data/security_state.json",
         "r"
     ) as f:
+
         security = json.load(f)
 
 except Exception:
+
     security = {
         "threat_level": "NORMAL",
-        "alerts": []
+        "alerts": [],
+        "blocked_messages": 0,
+        "attack_type": "NONE"
     }
 
 # --------------------------------------------------
-# Dashboard Header
+# Header
 # --------------------------------------------------
 
 st.title("🚗 AutoRed Vehicle Dashboard")
@@ -112,6 +119,15 @@ blocked_messages = security.get(
     0
 )
 
+attack_type = security.get(
+    "attack_type",
+    "NONE"
+)
+
+# --------------------------------------------------
+# Threat Level
+# --------------------------------------------------
+
 if threat_level == "HIGH":
 
     st.error(
@@ -146,11 +162,25 @@ else:
         "No active alerts"
     )
 
-st.metric(
-    "Blocked Messages",
-    blocked_messages
-)
+# --------------------------------------------------
+# Security Metrics
+# --------------------------------------------------
 
+col1, col2 = st.columns(2)
+
+with col1:
+
+    st.metric(
+        "Blocked Messages",
+        blocked_messages
+    )
+
+with col2:
+
+    st.metric(
+        "Attack Type",
+        attack_type
+    )
 
 # --------------------------------------------------
 # Event Feed
@@ -158,7 +188,9 @@ st.metric(
 
 st.divider()
 
-st.subheader("Recent Security Events")
+st.subheader(
+    "Recent Security Events"
+)
 
 try:
 
@@ -175,7 +207,9 @@ try:
 
         for event in reversed(events):
 
-            st.code(event.strip())
+            st.code(
+                event.strip()
+            )
 
     else:
 
@@ -183,7 +217,7 @@ try:
             "No security events recorded"
         )
 
-except:
+except Exception:
 
     st.info(
         "No security events recorded"

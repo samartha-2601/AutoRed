@@ -4,7 +4,6 @@ import time
 
 from configs.can_ids import *
 
-
 bus = can.interface.Bus(
     channel="vcan0",
     interface="socketcan"
@@ -19,10 +18,10 @@ vehicle_state = {
 
 security_state = {
     "threat_level": "NORMAL",
-    "alerts": [], 
-    "blocked_messages": 0
+    "alerts": [],
+    "blocked_messages": 0,
+    "attack_type": "NONE"
 }
-
 
 door_events = []
 
@@ -37,6 +36,10 @@ while True:
 
     current_time = time.time()
 
+    # -------------------------
+    # Speed
+    # -------------------------
+
     if msg.arbitration_id == SPEED_ID:
 
         vehicle_state["speed"] = int.from_bytes(
@@ -44,12 +47,20 @@ while True:
             byteorder="big"
         )
 
+    # -------------------------
+    # RPM
+    # -------------------------
+
     elif msg.arbitration_id == RPM_ID:
 
         vehicle_state["rpm"] = int.from_bytes(
             msg.data,
             byteorder="big"
         )
+
+    # -------------------------
+    # Door ECU
+    # -------------------------
 
     elif msg.arbitration_id == DOOR_ID:
 
@@ -77,8 +88,12 @@ while True:
             security_state["threat_level"] = "HIGH"
 
             security_state["alerts"] = [
-                "Door ECU Spoofing Detected"
+                "Door ECU Replay/Spoofing Detected"
             ]
+
+            security_state["attack_type"] = (
+                "REPLAY / SPOOFING"
+            )
 
             with open(
                 "logs/security_events.log",
@@ -87,7 +102,7 @@ while True:
 
                 f.write(
                     f"{time.strftime('%Y-%m-%d %H:%M:%S')} "
-                    "Door ECU Spoofing Detected\n"
+                    "Door ECU Replay/Spoofing Detected\n"
                 )
 
             alert_active = True
@@ -104,6 +119,10 @@ while True:
                     "Gateway Blocking Activated\n"
                 )
 
+    # -------------------------
+    # Brake ECU
+    # -------------------------
+
     elif msg.arbitration_id == BRAKE_ID:
 
         vehicle_state["brake"] = (
@@ -111,6 +130,10 @@ while True:
             if msg.data[0] == 1
             else "RELEASED"
         )
+
+    # -------------------------
+    # Write Vehicle State
+    # -------------------------
 
     with open(
         "data/vehicle_state.json",
@@ -122,6 +145,10 @@ while True:
             f,
             indent=4
         )
+
+    # -------------------------
+    # Write Security State
+    # -------------------------
 
     with open(
         "data/security_state.json",
