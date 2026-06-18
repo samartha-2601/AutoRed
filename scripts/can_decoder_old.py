@@ -1,5 +1,4 @@
 import can
-import json
 
 from configs.can_ids import *
 
@@ -7,15 +6,6 @@ bus = can.interface.Bus(
     channel="vcan0",
     interface="socketcan"
 )
-
-vehicle_state = {
-    "speed": 0,
-    "rpm": 0,
-    "door": "UNKNOWN",
-    "brake": "UNKNOWN",
-    "threat_level": "NORMAL",
-    "alerts": []
-}
 
 print("[+] CAN Decoder Started")
 
@@ -25,41 +15,38 @@ while True:
 
     if msg.arbitration_id == SPEED_ID:
 
-        vehicle_state["speed"] = int.from_bytes(
+        speed = int.from_bytes(
             msg.data,
             byteorder="big"
         )
+
+        print(f"[Speed] {speed} mph")
 
     elif msg.arbitration_id == RPM_ID:
 
-        vehicle_state["rpm"] = int.from_bytes(
+        rpm = int.from_bytes(
             msg.data,
             byteorder="big"
         )
 
+        print(f"[RPM] {rpm}")
+
     elif msg.arbitration_id == DOOR_ID:
 
-        vehicle_state["door"] = (
+        status = (
             "LOCKED"
             if msg.data[0] == 1
             else "UNLOCKED"
         )
 
+        print(f"[Door] {status}")
+
     elif msg.arbitration_id == BRAKE_ID:
 
-        vehicle_state["brake"] = (
+        status = (
             "PRESSED"
             if msg.data[0] == 1
             else "RELEASED"
         )
 
-    with open(
-        "data/vehicle_state.json",
-        "w"
-    ) as f:
-
-        json.dump(
-            vehicle_state,
-            f,
-            indent=4
-        )
+        print(f"[Brake] {status}")

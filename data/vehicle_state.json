@@ -1,0 +1,10 @@
+{
+    "speed": 66,
+    "rpm": 1646,
+    "door": "LOCKED",
+    "brake": "RELEASED",
+    "threat_level": "HIGH",
+    "alerts": [
+        "Door ECU Spoofing Detected"
+    ]
+}
