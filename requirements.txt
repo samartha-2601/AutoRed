@@ -1,0 +1,4 @@
+python-can==4.6.1
+streamlit
+pandas
+plotly
