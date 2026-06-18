@@ -21,6 +21,25 @@ Build a realistic vehicle security environment for:
 - Docker
 - Ghidra
 
-## Current Progress
+## Embedded Security
 
-Build started. MVP in Progress!
+### Native C Engine ECU
+
+- SocketCAN
+- GCC
+- Linux CAN Sockets
+
+### Firmware Analysis
+
+- x86 Firmware
+- ARM Firmware
+- Static Analysis
+- Secret Extraction
+- Symbol Recovery
+
+### Reverse Engineering Findings
+
+- Hardcoded Secrets
+- Unsafe strcpy Usage
+- Debug Metadata Exposure
+- Dormant Functionality
