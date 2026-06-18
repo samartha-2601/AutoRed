@@ -2,5 +2,6 @@
     "threat_level": "HIGH",
     "alerts": [
         "Door ECU Spoofing Detected"
-    ]
+    ],
+    "blocked_messages": 94
 }

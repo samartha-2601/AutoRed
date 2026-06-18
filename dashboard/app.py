@@ -107,6 +107,11 @@ alerts = security.get(
     []
 )
 
+blocked_messages = security.get(
+    "blocked_messages",
+    0
+)
+
 if threat_level == "HIGH":
 
     st.error(
@@ -140,6 +145,11 @@ else:
     st.info(
         "No active alerts"
     )
+
+st.metric(
+    "Blocked Messages",
+    blocked_messages
+)
 
 
 # --------------------------------------------------

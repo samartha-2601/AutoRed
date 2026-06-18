@@ -4,7 +4,6 @@ import time
 
 from configs.can_ids import *
 
-alert_active = False
 
 bus = can.interface.Bus(
     channel="vcan0",
@@ -20,10 +19,15 @@ vehicle_state = {
 
 security_state = {
     "threat_level": "NORMAL",
-    "alerts": []
+    "alerts": [], 
+    "blocked_messages": 0
 }
 
+
 door_events = []
+
+alert_active = False
+block_door_messages = False
 
 print("[+] Gateway ECU Started")
 
@@ -48,6 +52,12 @@ while True:
         )
 
     elif msg.arbitration_id == DOOR_ID:
+
+        if block_door_messages:
+
+            security_state["blocked_messages"] += 1
+
+            continue
 
         vehicle_state["door"] = (
             "LOCKED"
@@ -79,8 +89,20 @@ while True:
                     f"{time.strftime('%Y-%m-%d %H:%M:%S')} "
                     "Door ECU Spoofing Detected\n"
                 )
-                
+
             alert_active = True
+
+            block_door_messages = True
+
+            with open(
+                "logs/security_events.log",
+                "a"
+            ) as f:
+
+                f.write(
+                    f"{time.strftime('%Y-%m-%d %H:%M:%S')} "
+                    "Gateway Blocking Activated\n"
+                )
 
     elif msg.arbitration_id == BRAKE_ID:
 

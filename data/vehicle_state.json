@@ -1,6 +1,6 @@
 {
-    "speed": 73,
-    "rpm": 1760,
+    "speed": 66,
+    "rpm": 3086,
     "door": "LOCKED",
-    "brake": "RELEASED"
+    "brake": "PRESSED"
 }
