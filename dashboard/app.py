@@ -140,3 +140,41 @@ else:
     st.info(
         "No active alerts"
     )
+
+
+# --------------------------------------------------
+# Event Feed
+# --------------------------------------------------
+
+st.divider()
+
+st.subheader("Recent Security Events")
+
+try:
+
+    with open(
+        "logs/security_events.log",
+        "r"
+    ) as f:
+
+        events = f.readlines()
+
+    events = events[-10:]
+
+    if events:
+
+        for event in reversed(events):
+
+            st.code(event.strip())
+
+    else:
+
+        st.info(
+            "No security events recorded"
+        )
+
+except:
+
+    st.info(
+        "No security events recorded"
+    )

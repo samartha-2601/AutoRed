@@ -4,6 +4,8 @@ import time
 
 from configs.can_ids import *
 
+alert_active = False
+
 bus = can.interface.Bus(
     channel="vcan0",
     interface="socketcan"
@@ -60,13 +62,25 @@ while True:
             if current_time - t < 2
         ]
 
-        if len(door_events) > 5:
+        if len(door_events) > 5 and not alert_active:
 
             security_state["threat_level"] = "HIGH"
 
             security_state["alerts"] = [
                 "Door ECU Spoofing Detected"
             ]
+
+            with open(
+                "logs/security_events.log",
+                "a"
+            ) as f:
+
+                f.write(
+                    f"{time.strftime('%Y-%m-%d %H:%M:%S')} "
+                    "Door ECU Spoofing Detected\n"
+                )
+                
+            alert_active = True
 
     elif msg.arbitration_id == BRAKE_ID:
 
