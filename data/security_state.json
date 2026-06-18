@@ -1,0 +1,6 @@
+{
+    "threat_level": "HIGH",
+    "alerts": [
+        "Door ECU Spoofing Detected"
+    ]
+}
