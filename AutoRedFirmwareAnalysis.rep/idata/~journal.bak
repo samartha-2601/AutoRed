@@ -1,4 +1,0 @@
-IADD:00000000:/vulnerable_firmware
-IDSET:/vulnerable_firmware:7f011a53911423546575894
-IADD:00000001:/vulnerable_firmware_arm
-IDSET:/vulnerable_firmware_arm:7f011aa1f11850535871261

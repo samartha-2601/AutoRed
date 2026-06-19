@@ -1,10 +1,20 @@
+# Python
 venv/
-
 __pycache__/
 *.pyc
 
+# Runtime Data
+data/*.json
+
+# Logs
+logs/*.log
+
+# Compiled ECU
+firmware/engine_ecu
+
+# Ghidra
+AutoRedFirmwareAnalysis.gpr
+AutoRedFirmwareAnalysis.rep/
+
+# VS Code
 .vscode/
-
-*.log
-
-.DS_Store
